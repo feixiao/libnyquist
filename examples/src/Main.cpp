@@ -28,9 +28,12 @@ int main(int argc, const char **argv) try
 
     const int desiredSampleRate = 44100;
     const int desiredChannelCount = 2;
-    AudioDevice myDevice(desiredChannelCount, desiredSampleRate);
-    myDevice.Open(myDevice.info.id);
-
+    AudioDevice myDevice(desiredChannelCount, desiredSampleRate,7);
+   // myDevice.Open(myDevice.info.id);
+   if (!myDevice.Open(myDevice.info.id)) {
+        std::cout  << "audio device open failed" << std::endl;
+        return -1;
+    }
     std::shared_ptr<AudioData> fileData = std::make_shared<AudioData>();
 
     NyquistIO loader;
@@ -64,6 +67,9 @@ int main(int argc, const char **argv) try
 
         // Multi-channel wave
         //loader.Load(fileData.get(), "test_data/ad_hoc/6_channel_44k_16b.wav");
+        //std::string file("/home/frank/media/5.1wav.wav");
+        std::string file("test_data/2ch/44100/16/test.wav");
+        loader.Load(fileData.get(), file);
 
         // 1 + 2 channel ogg
         //loader.Load(fileData.get(), "test_data/ad_hoc/LR_Stereo.ogg");
@@ -93,8 +99,8 @@ int main(int argc, const char **argv) try
         //loader.Load(fileData.get(), "test_data/ad_hoc/TestBeat_Int24_Mono.wv");
 
         // In-memory wavpack
-        auto memory = ReadFile("test_data/ad_hoc/TestBeat_Float32.wv");
-        loader.Load(fileData.get(), "wv", memory.buffer);
+//        auto memory = ReadFile("test_data/ad_hoc/TestBeat_Float32.wv");
+//        loader.Load(fileData.get(), "wv", memory.buffer);
 
         // 1 + 2 channel musepack
         //loader.Load(fileData.get(), "test_data/ad_hoc/44_16_stereo.mpc");
@@ -134,10 +140,13 @@ int main(int argc, const char **argv) try
         MonoToStereo(fileData->samples.data(), stereoCopy.data(), fileData->samples.size());
         myDevice.Play(stereoCopy);
     }
-    else
+    else if (fileData->channelCount == 2)
     {
         std::cout << "Playing STEREO for: " << fileData->lengthSeconds << " seconds..." << std::endl;
         myDevice.Play(fileData->samples);
+    }else {
+        std::cout << "Playing 5.1 for: " << fileData->lengthSeconds << " seconds..." << std::endl;
+//        myDevice.Play(fileData->samples);
     }
 
     // Test Opus Encoding
