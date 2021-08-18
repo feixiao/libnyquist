@@ -180,6 +180,7 @@ RtAudio :: RtAudio( RtAudio::Api api )
 {
   rtapi_ = 0;
 
+
   if ( api != UNSPECIFIED ) {
     // Attempt to open the specified API.
     openRtApi( api );

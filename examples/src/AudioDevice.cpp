@@ -109,6 +109,12 @@ void AudioDevice::ListAudioDevices()
     std::cout << std::endl;
 }
 
+
+int32_t AudioDevice::GetAudioDeviceCount() {
+    std::unique_ptr<RtAudio> tempDevice(new RtAudio(RtAudio::LINUX_ALSA));
+    return  tempDevice->getDeviceCount();
+}
+
 bool AudioDevice::Play(const std::vector<float> & data)
 {
     if (!rtaudio->isStreamOpen()) return false;

@@ -14,6 +14,16 @@ Libnyquist is meant to be statically linked, which is not the case with other po
  
 While untested, there are no technical conditions that preclude compilation on other platforms with C++11 support (Android NDK r10e+, Linux, iOS, etc).
 
+```shell
+# for The Advanced Linux Sound Architecture API.
+sudo apt-get install libalsa-ocaml-dev
+
+# use LINUX_ALSA
+cmake -D LIBNYQUIST_ASOUND=1 ../
+
+```
+
+
 ## Format Support
 
 Regardless of input bit depth, the library produces a channel-interleaved float vector, normalized between [-1.0,+1.0]. At present, the library does not provide comprehensive resampling functionality. 

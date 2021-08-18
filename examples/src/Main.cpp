@@ -17,7 +17,14 @@ using namespace nqr;
 
 int main(int argc, const char **argv) try
 {
+
+    if(AudioDevice::GetAudioDeviceCount() == 0) {
+        std::cout  << "no audio device" << std::endl;
+        return -1;
+    }
+
     AudioDevice::ListAudioDevices();
+
 
     const int desiredSampleRate = 44100;
     const int desiredChannelCount = 2;
