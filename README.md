@@ -18,10 +18,14 @@ While untested, there are no technical conditions that preclude compilation on o
     ```shell
     # for The Advanced Linux Sound Architecture API.
     sudo apt-get install libalsa-ocaml-dev
-
+  
     # use LINUX_ALSA
     cmake -D LIBNYQUIST_ASOUND=1 ../
     ```
+  + OSX
+  ```shell
+  cmake -DAPPLE=1 ../
+  ```
 
 
 ## Format Support

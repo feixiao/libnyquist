@@ -111,7 +111,12 @@ void AudioDevice::ListAudioDevices()
 
 
 int32_t AudioDevice::GetAudioDeviceCount() {
+#ifdef APPLE
+    std::unique_ptr<RtAudio> tempDevice(new RtAudio(RtAudio::MACOSX_CORE));
+#else
     std::unique_ptr<RtAudio> tempDevice(new RtAudio(RtAudio::LINUX_ALSA));
+#endif
+
     return  tempDevice->getDeviceCount();
 }
 

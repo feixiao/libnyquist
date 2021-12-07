@@ -25,10 +25,10 @@ int main(int argc, const char **argv) try
 
     AudioDevice::ListAudioDevices();
 
-
     const int desiredSampleRate = 44100;
     const int desiredChannelCount = 2;
-    AudioDevice myDevice(desiredChannelCount, desiredSampleRate,7);
+    AudioDevice myDevice(desiredChannelCount, desiredSampleRate,2);
+
    // myDevice.Open(myDevice.info.id);
    if (!myDevice.Open(myDevice.info.id)) {
         std::cout  << "audio device open failed" << std::endl;
