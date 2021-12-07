@@ -45,3 +45,5 @@ DerivedData
 *.opendb
 
 encoded.wav
+
+cmake-build-debug
