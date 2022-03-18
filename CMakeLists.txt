@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.13)
 set(LIBNYQUIST_ROOT "${CMAKE_CURRENT_SOURCE_DIR}")
 set(CMAKE_MODULE_PATH ${LIBNYQUIST_ROOT}/cmake)
 
+
+set(CMAKE_CXX_STANDARD 11)
+
 include(CXXhelpers)
 
 if (CMAKE_OSX_ARCHITECTURES)
@@ -17,6 +20,16 @@ else()
 endif()
 
 #-------------------------------------------------------------------------------
+
+
+
+if(APPLE)
+    set(CMAKE_OSX_SYSROOT "/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk")
+    set(CMAKE_CXX_FLAGS "--sysroot ${CMAKE_OSX_SYSROOT} ${CMAKE_CXX_FLAGS}")
+
+    # https://stackoverflow.com/questions/69803659/what-is-the-proper-way-to-build-for-macos-x86-64-using-cmake-on-apple-m1-arm
+    set(CMAKE_OSX_ARCHITECTURES "x86_64")
+endif()
 
 # libopus
 
@@ -258,6 +271,11 @@ if(BUILD_EXAMPLE)
     elseif(APPLE)
         message(INFO,"APPLE  set.")
         add_definitions("-DAPPLE")
+        set(CMAKE_OSX_SYSROOT "/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk")
+        set(CMAKE_CXX_FLAGS "--sysroot ${CMAKE_OSX_SYSROOT} ${CMAKE_CXX_FLAGS}")
+
+        # https://stackoverflow.com/questions/69803659/what-is-the-proper-way-to-build-for-macos-x86-64-using-cmake-on-apple-m1-arm
+        set(CMAKE_OSX_ARCHITECTURES "x86_64")
         target_compile_definitions(${NQR_EXAMPLE_APP_NAME} PRIVATE __MACOSX_CORE__)
     elseif(LIBNYQUIST_JACK)
         message(INFO,"LIBNYQUIST_JACK  set.")
@@ -292,6 +310,8 @@ if(BUILD_EXAMPLE)
     )
 
     if(APPLE)
+        target_compile_definitions(${NQR_EXAMPLE_APP_NAME} PRIVATE __MACOSX_CORE__)
+
         target_link_libraries(${NQR_EXAMPLE_APP_NAME} PRIVATE
             "-framework AudioToolbox"
             "-framework AudioUnit"
