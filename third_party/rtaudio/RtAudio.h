@@ -847,6 +847,7 @@ inline void RtAudio :: showWarnings( bool value ) throw() { rtapi_->showWarnings
 
 #include <CoreAudio/AudioHardware.h>
 
+// RtApiCore基于OSX平台的RtApi实现
 class RtApiCore: public RtApi
 {
 public:

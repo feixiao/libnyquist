@@ -25,15 +25,6 @@ int main(int argc, const char **argv) try
 
     AudioDevice::ListAudioDevices();
 
-    const int desiredSampleRate = 44100;
-    const int desiredChannelCount = 2;
-    AudioDevice myDevice(desiredChannelCount, desiredSampleRate,2);
-
-   // myDevice.Open(myDevice.info.id);
-   if (!myDevice.Open(myDevice.info.id)) {
-        std::cout  << "audio device open failed" << std::endl;
-        return -1;
-    }
     std::shared_ptr<AudioData> fileData = std::make_shared<AudioData>();
 
     NyquistIO loader;
@@ -49,34 +40,36 @@ int main(int argc, const char **argv) try
         //loader.Load(fileData.get(), "libnyquist_example_output.opus");
 
         // 1-channel wave
-        //loader.Load(fileData.get(), "test_data/1ch/44100/8/test.wav");
-        //loader.Load(fileData.get(), "test_data/1ch/44100/16/test.wav");
-        //loader.Load(fileData.get(), "test_data/1ch/44100/24/test.wav");
-        //loader.Load(fileData.get(), "test_data/1ch/44100/32/test.wav");
-        //loader.Load(fileData.get(), "test_data/1ch/44100/64/test.wav");
+        //  loader.Load(fileData.get(), "test_data/1ch/44100/8/test.wav");
+        //  loader.Load(fileData.get(), "test_data/1ch/44100/16/test.wav");
+        //  loader.Load(fileData.get(), "test_data/1ch/44100/24/test.wav");
+        //  loader.Load(fileData.get(), "test_data/1ch/44100/32/test.wav");
+        //  loader.Load(fileData.get(), "test_data/1ch/44100/64/test.wav");
 
         // 2-channel wave
-        //loader.Load(fileData.get(), "test_data/2ch/44100/8/test.wav");
-        //loader.Load(fileData.get(), "test_data/2ch/44100/16/test.wav");
-        //loader.Load(fileData.get(), "test_data/2ch/44100/24/test.wav");
-        //loader.Load(fileData.get(), "test_data/2ch/44100/32/test.wav");
-        //loader.Load(fileData.get(), "test_data/2ch/44100/64/test.wav");
+        loader.Load(fileData.get(), "/Users/frank/workspace/github/libnyquist/test_data/2ch/44100/8/test.wav");
+        //  loader.Load(fileData.get(), "test_data/2ch/44100/16/test.wav");
+        //  loader.Load(fileData.get(), "test_data/2ch/44100/24/test.wav");
+        //  loader.Load(fileData.get(), "test_data/2ch/44100/32/test.wav");
+        //  loader.Load(fileData.get(), "test_data/2ch/44100/64/test.wav");
 
-        //loader.Load(fileData.get(), "test_data/ad_hoc/TestBeat_44_16_mono-ima4-reaper.wav");
-        //loader.Load(fileData.get(), "test_data/ad_hoc/TestBeat_44_16_stereo-ima4-reaper.wav");
+        //  loader.Load(fileData.get(), "test_data/ad_hoc/TestBeat_44_16_mono-ima4-reaper.wav");
+        //  loader.Load(fileData.get(), "test_data/ad_hoc/TestBeat_44_16_stereo-ima4-reaper.wav");
 
         // Multi-channel wave
-        //loader.Load(fileData.get(), "test_data/ad_hoc/6_channel_44k_16b.wav");
-        //std::string file("/home/frank/media/5.1wav.wav");
-        std::string file("test_data/2ch/44100/16/test.wav");
-        loader.Load(fileData.get(), file);
+        // loader.Load(fileData.get(), "test_data/ad_hoc/6_channel_44k_16b.wav");
+        // std::string file("/home/frank/media/5.1wav.wav");
+        // std::string file("test_data/2ch/44100/16/test.wav");
+        // std::string file("test_data/26-HRA-parma_chid-48-5376k-70_Lh_Rh.wav");
+        // std::string file("test_data/8ch/7.1.wav");
+        // loader.Load(fileData.get(), file);
 
         // 1 + 2 channel ogg
-        //loader.Load(fileData.get(), "test_data/ad_hoc/LR_Stereo.ogg");
-        //loader.Load(fileData.get(), "test_data/ad_hoc/TestLaugh_44k.ogg");
-        //loader.Load(fileData.get(), "test_data/ad_hoc/TestBeat.ogg");
-        //loader.Load(fileData.get(), "test_data/ad_hoc/TestBeatMono.ogg");
-        //loader.Load(fileData.get(), "test_data/ad_hoc/BlockWoosh_Stereo.ogg");
+        //  loader.Load(fileData.get(), "test_data/ad_hoc/LR_Stereo.ogg");
+        //  loader.Load(fileData.get(), "test_data/ad_hoc/TestLaugh_44k.ogg");
+        //  loader.Load(fileData.get(), "test_data/ad_hoc/TestBeat.ogg");
+        //  loader.Load(fileData.get(), "test_data/ad_hoc/TestBeatMono.ogg");
+        //  loader.Load(fileData.get(), "test_data/ad_hoc/BlockWoosh_Stereo.ogg");
 
         // 1 + 2 channel flac
         //loader.Load(fileData.get(), "test_data/ad_hoc/KittyPurr8_Stereo_Dithered.flac");
@@ -124,6 +117,20 @@ int main(int argc, const char **argv) try
     std::cout << "Starting recording ..." << std::endl;
     myDevice.Record(fileData->sampleRate * fileData->lengthSeconds, fileData->samples);
     */
+
+
+
+    const int desiredSampleRate = fileData->sampleRate;
+    const int desiredChannelCount = fileData->channelCount;
+    AudioDevice myDevice(desiredChannelCount, desiredSampleRate);
+
+    std::cout << "audio device create" << desiredSampleRate << std::endl;
+   // myDevice.Open(myDevice.info.id);
+   if (!myDevice.Open(myDevice.info.id)) {
+        std::cout  << "audio device open failed" << std::endl;
+        return -1;
+    }
+
 
     if (fileData->sampleRate != desiredSampleRate)
     {
