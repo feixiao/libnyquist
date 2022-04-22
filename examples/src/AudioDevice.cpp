@@ -104,7 +104,7 @@ void AudioDevice::ListAudioDevices()
     for (uint32_t i = 0; i < devices; ++i)
     {
         info = tempDevice->getDeviceInfo(i);
-        std::cout << "\tDevice: " << i << " - " << info.name << std::endl;
+        std::cout << "\tDevice: " << i << " - " << info.name << "- out: " << info.outputChannels << std::endl;
     }
     std::cout << std::endl;
 }

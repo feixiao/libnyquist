@@ -29,7 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define AUDIO_DEVICE_H
 
 #include "RingBuffer.h"
-#include "rtaudio/RtAudio.h"
+#include "RtAudio.h"
 #include <vector>
 #include <memory>
 

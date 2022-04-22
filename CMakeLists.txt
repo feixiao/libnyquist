@@ -197,11 +197,13 @@ if (WIN32)
     _disable_warning(4018)
 endif()
 
+include_directories(${LIBNYQUIST_ROOT}/3rd/rtaudio/include)
 target_include_directories(libnyquist
   PUBLIC
     $<INSTALL_INTERFACE:include>
     $<BUILD_INTERFACE:${LIBNYQUIST_ROOT}/include>
   PRIVATE
+    ${LIBNYQUIST_ROOT}/3rd/rtaudio/include
     ${LIBNYQUIST_ROOT}/include/libnyquist
     ${LIBNYQUIST_ROOT}/third_party
     ${LIBNYQUIST_ROOT}/third_party/FLAC/src/include
@@ -234,7 +236,9 @@ set_target_properties(libnyquist
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 
-target_link_libraries(libnyquist PRIVATE libwavpack)
+target_link_libraries(libnyquist PRIVATE 
+    libwavpack
+    ${LIBNYQUIST_ROOT}/3rd/rtaudio/lib/osx/x86_64/librtaudio.dylib)
 
 install(TARGETS libnyquist
         LIBRARY DESTINATION lib
@@ -260,8 +264,6 @@ if(BUILD_EXAMPLE)
         ${LIBNYQUIST_ROOT}/examples/src/AudioDevice.cpp
         ${LIBNYQUIST_ROOT}/examples/src/AudioDevice.h
         ${LIBNYQUIST_ROOT}/examples/src/RingBuffer.h
-        ${LIBNYQUIST_ROOT}/third_party/rtaudio/RtAudio.cpp
-        ${LIBNYQUIST_ROOT}/third_party/rtaudio/RtAudio.h
     )
 
     add_executable(${NQR_EXAMPLE_APP_NAME} ${EXAMPLE_SOURCES})

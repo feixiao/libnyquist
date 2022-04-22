@@ -47,12 +47,12 @@ int main(int argc, const char **argv) try
         //  loader.Load(fileData.get(), "test_data/1ch/44100/64/test.wav");
 
         // 2-channel wave
-        loader.Load(fileData.get(), "/Users/frank/workspace/github/libnyquist/test_data/2ch/44100/8/test.wav");
+        //  loader.Load(fileData.get(), "test_data/2ch/44100/8/test.wav");
         //  loader.Load(fileData.get(), "test_data/2ch/44100/16/test.wav");
         //  loader.Load(fileData.get(), "test_data/2ch/44100/24/test.wav");
         //  loader.Load(fileData.get(), "test_data/2ch/44100/32/test.wav");
         //  loader.Load(fileData.get(), "test_data/2ch/44100/64/test.wav");
-
+        loader.Load(fileData.get(), "/Users/frank/workspace/github/libnyquist/test_data/2ch/44100/16/test.wav");
         //  loader.Load(fileData.get(), "test_data/ad_hoc/TestBeat_44_16_mono-ima4-reaper.wav");
         //  loader.Load(fileData.get(), "test_data/ad_hoc/TestBeat_44_16_stereo-ima4-reaper.wav");
 
@@ -122,16 +122,18 @@ int main(int argc, const char **argv) try
 
     const int desiredSampleRate = fileData->sampleRate;
     const int desiredChannelCount = fileData->channelCount;
-    AudioDevice myDevice(desiredChannelCount, desiredSampleRate);
+    AudioDevice myDevice(desiredChannelCount, desiredSampleRate,4);
 
-    std::cout << "audio device create" << desiredSampleRate << std::endl;
+    printf("sampleRate : %d channel : %d\n", fileData->sampleRate, fileData->channelCount);
+
+    std::cout << "audio device create"<< std::endl;
    // myDevice.Open(myDevice.info.id);
    if (!myDevice.Open(myDevice.info.id)) {
         std::cout  << "audio device open failed" << std::endl;
         return -1;
     }
 
-
+    std::cout << "audio device open"<< std::endl;
     if (fileData->sampleRate != desiredSampleRate)
     {
         std::cout << "[Warning - Sample Rate Mismatch] - file is sampled at " << fileData->sampleRate << " and output is " << desiredSampleRate << std::endl;
@@ -153,22 +155,22 @@ int main(int argc, const char **argv) try
         myDevice.Play(fileData->samples);
     }else {
         std::cout << "Playing 5.1 for: " << fileData->lengthSeconds << " seconds..." << std::endl;
-//        myDevice.Play(fileData->samples);
+        myDevice.Play(fileData->samples);
     }
 
     // Test Opus Encoding
-    {
-        // Resample
-        std::vector<float> outputBuffer;
-        std::cout << "Output Samples: " << outputBuffer.size() << std::endl;
+    // {
+    //     // Resample
+    //     std::vector<float> outputBuffer;
+    //     std::cout << "Output Samples: " << outputBuffer.size() << std::endl;
 
-        outputBuffer.reserve(fileData->samples.size() * 2);
-        linear_resample(fileData->sampleRate / 48000.0f, fileData->samples, outputBuffer, (uint32_t)fileData->samples.size());
+    //     outputBuffer.reserve(fileData->samples.size() * 2);
+    //     linear_resample(fileData->sampleRate / 48000.0f, fileData->samples, outputBuffer, (uint32_t)fileData->samples.size());
 
-        fileData->samples = outputBuffer;
-        int encoderStatus = encode_opus_to_disk({ fileData->channelCount, PCM_FLT, DITHER_NONE }, fileData.get(), "libnyquist_example_output.opus");
-        std::cout << "Encoder Status: " << encoderStatus << std::endl;
-    }
+    //     fileData->samples = outputBuffer;
+    //     int encoderStatus = encode_opus_to_disk({ fileData->channelCount, PCM_FLT, DITHER_NONE }, fileData.get(), "libnyquist_example_output.opus");
+    //     std::cout << "Encoder Status: " << encoderStatus << std::endl;
+    // }
 
     return EXIT_SUCCESS;
 }
