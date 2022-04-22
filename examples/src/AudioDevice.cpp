@@ -77,12 +77,12 @@ bool AudioDevice::Open(const int deviceId)
     outputParams.nChannels = info.numChannels;
     outputParams.firstChannel = 0;
 
-    RtAudio::StreamParameters inputParams;
-    inputParams.deviceId = rtaudio->getDefaultInputDevice();
-    inputParams.nChannels = 1;
-    inputParams.firstChannel = 0;
+    // RtAudio::StreamParameters inputParams;
+    // inputParams.deviceId = info.id; // rtaudio->getDefaultInputDevice();
+    // inputParams.nChannels = 2;
+    // inputParams.firstChannel = 0;
 
-    rtaudio->openStream(&outputParams, &inputParams, RTAUDIO_FLOAT32, info.sampleRate, &info.frameSize, &rt_callback, (void*) & buffer);
+    rtaudio->openStream(&outputParams,nullptr, RTAUDIO_FLOAT32, info.sampleRate, &info.frameSize, &rt_callback, (void*) & buffer);
 
     if (rtaudio->isStreamOpen()) 
     {
@@ -104,7 +104,7 @@ void AudioDevice::ListAudioDevices()
     for (uint32_t i = 0; i < devices; ++i)
     {
         info = tempDevice->getDeviceInfo(i);
-        std::cout << "\tDevice: " << i << " - " << info.name << "- out: " << info.outputChannels << std::endl;
+        std::cout << "\tDevice: " << i << " - " << info.name << " - out: " << info.outputChannels << std::endl;
     }
     std::cout << std::endl;
 }

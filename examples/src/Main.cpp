@@ -127,6 +127,7 @@ int main(int argc, const char **argv) try
     printf("sampleRate : %d channel : %d\n", fileData->sampleRate, fileData->channelCount);
 
     std::cout << "audio device create"<< std::endl;
+    std::cout << "device id : " << myDevice.info.id << std::endl;
    // myDevice.Open(myDevice.info.id);
    if (!myDevice.Open(myDevice.info.id)) {
         std::cout  << "audio device open failed" << std::endl;
