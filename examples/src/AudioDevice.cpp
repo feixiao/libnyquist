@@ -38,12 +38,15 @@ static int rt_callback(void * output_buffer, void * input_buffer, uint32_t num_b
     if (status) std::cerr << "[rtaudio] buffer over or underflow" << std::endl;
 
     // Playback
-    if (buffer.getAvailableRead()) buffer.read((float*) output_buffer, BUFFER_LENGTH);
+    if (buffer.getAvailableRead())  {
+        buffer.read((float*) output_buffer, BUFFER_LENGTH);
+    } 
     else memset(output_buffer, 0, BUFFER_LENGTH * sizeof(float));
 
     // Recording
-    if (record_buffer.getAvailableWrite()) record_buffer.write((float*) input_buffer, BUFFER_LENGTH / 2);
-
+    // if (record_buffer.getAvailableWrite()) {
+    //     record_buffer.write((float*) input_buffer, BUFFER_LENGTH / 2);
+    // }
     return 0;
 }
 
@@ -73,7 +76,7 @@ bool AudioDevice::Open(const int deviceId)
     if (!rtaudio) throw std::runtime_error("rtaudio not created yet");
 
     RtAudio::StreamParameters outputParams;
-    outputParams.deviceId = info.id;
+    outputParams.deviceId = rtaudio->getDefaultOutputDevice();
     outputParams.nChannels = info.numChannels;
     outputParams.firstChannel = 0;
 
@@ -81,6 +84,9 @@ bool AudioDevice::Open(const int deviceId)
     // inputParams.deviceId = info.id; // rtaudio->getDefaultInputDevice();
     // inputParams.nChannels = 2;
     // inputParams.firstChannel = 0;
+
+    printf("[%s] device_id:%d  defaultOutputDevice :%d channels:%d \n", 
+        __FUNCTION__, info.id, rtaudio->getDefaultOutputDevice(), info.numChannels);
 
     rtaudio->openStream(&outputParams,nullptr, RTAUDIO_FLOAT32, info.sampleRate, &info.frameSize, &rt_callback, (void*) & buffer);
 

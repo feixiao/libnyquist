@@ -21,7 +21,9 @@ endif()
 
 #-------------------------------------------------------------------------------
 
-
+# cmake -DCMAKE_BUILD_TYPE=Debug/Release  path
+SET(CMAKE_CXX_FLAGS_DEBUG "-O0 -Wall -g -ggdb ")
+SET(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall")
 
 if(APPLE)
     set(CMAKE_OSX_SYSROOT "/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk")

@@ -48,11 +48,11 @@ int main(int argc, const char **argv) try
 
         // 2-channel wave
         //  loader.Load(fileData.get(), "test_data/2ch/44100/8/test.wav");
-        //  loader.Load(fileData.get(), "test_data/2ch/44100/16/test.wav");
+        // loader.Load(fileData.get(), "test_data/2ch/44100/16/test.wav");
         //  loader.Load(fileData.get(), "test_data/2ch/44100/24/test.wav");
         //  loader.Load(fileData.get(), "test_data/2ch/44100/32/test.wav");
         //  loader.Load(fileData.get(), "test_data/2ch/44100/64/test.wav");
-        loader.Load(fileData.get(), "/Users/frank/workspace/github/libnyquist/test_data/2ch/44100/16/test.wav");
+
         //  loader.Load(fileData.get(), "test_data/ad_hoc/TestBeat_44_16_mono-ima4-reaper.wav");
         //  loader.Load(fileData.get(), "test_data/ad_hoc/TestBeat_44_16_stereo-ima4-reaper.wav");
 
@@ -122,7 +122,7 @@ int main(int argc, const char **argv) try
 
     const int desiredSampleRate = fileData->sampleRate;
     const int desiredChannelCount = fileData->channelCount;
-    AudioDevice myDevice(desiredChannelCount, desiredSampleRate,4);
+    AudioDevice myDevice(desiredChannelCount, desiredSampleRate);
 
     printf("sampleRate : %d channel : %d\n", fileData->sampleRate, fileData->channelCount);
 
